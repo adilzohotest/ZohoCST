@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every riyal has a story · لكلِّ ريالٍ أثر</title>
+<!--
+  ═══════════════════════════════════════════════════════════
+  PRESENTING
+  ═══════════════════════════════════════════════════════════
+  Arrows / Space / click = next     F = fullscreen
+  O = slide overview                 R = replay slide animation
+  L = switch language (English ⇄ العربية)
+  Open with ?lang=ar to start in Arabic.
+
+  ASSETS (same convention as "Every conversation matters")
+  logos/zoho.png crm.png campaigns.png books.png sign.png
+        contracts.png people.png cliq.png workdrive.png analytics.png
+  fonts/ZohoPuvi-*.woff  (optional)
+  Any missing logo falls back to a coloured letter mark.
+
+  TRANSLATIONS
+  Every string lives in data-t="English||العربية".
+  ═══════════════════════════════════════════════════════════
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Zoho Puvi";src:url("fonts/ZohoPuvi-Regular.woff") format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Zoho Puvi";src:url("fonts/ZohoPuvi-Medium.woff") format("woff");font-weight:500;font-display:swap}
+@font-face{font-family:"Zoho Puvi";src:url("fonts/ZohoPuvi-SemiBold.woff") format("woff");font-weight:600;font-display:swap}
+@font-face{font-family:"Zoho Puvi";src:url("fonts/ZohoPuvi-Bold.woff") format("woff");font-weight:700;font-display:swap}
+
+/* ════════ tokens — a Najdi night: palm green, sand, sadu red, date-gold ════════ */
+:root{
+  --ink:#06231A; --ink2:#0B2E22; --line:#1D4636;
+  --text:#F4EEDF; --muted:#9CB3A6; --soft:#D9CFB6;
+  --gold:#D8A845; --sadu:#A8342A; --flag:#0B8A47; --date:#6B3A1F;
+
+  --z-red:#E42527; --z-green:#33A852; --z-blue:#1A73E8; --z-yellow:#F5B01A;
+  --crm:#E14A3B; --camp:#F0A21B; --books:#2D9CDB; --sign:#5B6BF0; --contracts:#0FA3A3;
+  --people:#D6457A; --cliq:#1FA463; --wd:#3E7BFA; --anal:#7B61FF;
+
+  --w-bg:#FFFFFF; --w-canvas:#F5F6F3; --w-bd:#E3E6E0; --w-tx:#20271F; --w-mu:#77837A; --w-soft:#EEF1EC;
+
+  --latin:"Zoho Puvi","Segoe UI",system-ui,-apple-system,sans-serif;
+  --ar-body:"IBM Plex Sans Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif;
+  --ar-display:"Reem Kufi","IBM Plex Sans Arabic","Geeza Pro",sans-serif;
+  --body:var(--latin); --display:var(--latin);
+
+  --sadu-tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12'%3E%3Crect width='24' height='12' fill='%23A8342A'/%3E%3Crect width='24' height='1.4' fill='%23EFE3C8'/%3E%3Crect y='10.6' width='24' height='1.4' fill='%23EFE3C8'/%3E%3Cpath d='M0 9.6L6 2.4 12 9.6Z M12 9.6L18 2.4 24 9.6Z' fill='%231A1411'/%3E%3Cpath d='M12 3.2L13.5 5 12 6.8 10.5 5Z' fill='%23EFE3C8'/%3E%3Cpath d='M6 5.8L7.2 7.4 6 9 4.8 7.4Z M18 5.8L19.2 7.4 18 9 16.8 7.4Z' fill='%23D8A845'/%3E%3C/svg%3E");
+}
+html[lang="ar"]{--body:var(--ar-body);--display:var(--ar-display)}
+html[lang="ar"] *{letter-spacing:0 !important}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--ink);color:var(--text);font-family:var(--body);overflow:hidden;font-variant-numeric:tabular-nums}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60vw 50vw at 10% 0%, rgba(216,168,69,.12), transparent 62%),
+    radial-gradient(55vw 55vw at 96% 100%, rgba(11,138,71,.20), transparent 64%);}
+
+/* ════════ stage ════════ */
+#stage{width:1280px;height:720px;position:fixed;top:50%;left:50%;z-index:1;transform-origin:center}
+.slide{position:absolute;inset:0;display:none;padding:40px 54px 0;grid-template-rows:auto 1fr auto;gap:18px}
+.slide.is-on{display:grid}
+.slide.hero{grid-template-rows:1fr auto;place-items:center}
+
+/* ════════ deck type ════════ */
+.eyebrow{font-size:13px;color:var(--gold);display:flex;align-items:center;gap:8px;font-weight:500}
+h1{font-family:var(--display);font-weight:700;letter-spacing:-.03em;font-size:84px;line-height:.98}
+html[lang="ar"] h1{line-height:1.25;font-size:80px}
+h2{font-family:var(--display);font-weight:700;letter-spacing:-.022em;font-size:36px;line-height:1.08;margin-top:8px;max-width:30ch}
+html[lang="ar"] h2{font-size:34px;line-height:1.35;font-weight:600}
+.sub{font-size:17px;line-height:1.45;color:var(--muted)}
+.alt{font-size:26px;color:var(--soft);margin-top:14px;font-weight:500;letter-spacing:0}
+.alt:lang(ar){font-family:var(--ar-display)}
+.alt:lang(en){font-family:var(--latin)}
+.shead{display:flex;align-items:flex-end;justify-content:space-between;gap:34px}
+.shead .sub{max-width:36ch;font-size:14.5px;padding-bottom:4px}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{font-size:12px;padding:6px 11px 6px 9px;border-radius:99px;border:1px solid var(--line);
+  background:rgba(244,238,223,.04);white-space:nowrap;display:flex;align-items:center;gap:7px}
+
+/* app mark / logo slot, filled by JS with img or a letter fallback */
+[data-app]{display:inline-grid;place-items:center;flex:none;position:relative}
+[data-app] img{width:100%;height:100%;object-fit:contain;display:block}
+[data-app].nologo{background:var(--c);color:#fff;font-weight:700;font-family:var(--latin)}
+[data-app].nologo::after{content:attr(data-l)}
+.lg{width:16px;height:16px;border-radius:4px;font-size:9px}
+.amk{width:40px;height:40px;border-radius:11px;background:#fff;padding:7px;font-size:15px;
+  box-shadow:0 10px 22px -8px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06)}
+.amk.nologo{padding:0}
+
+/* ════════ art frame ════════ */
+.art{position:relative;width:100%;height:100%;border-radius:14px;overflow:hidden;
+  box-shadow:0 34px 70px -18px rgba(0,0,0,.7),0 0 0 1px rgba(244,238,223,.08)}
+.art > video,.art > img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ════════ Zoho app window ════════ */
+.win{width:100%;height:100%;background:var(--w-canvas);color:var(--w-tx);display:flex;flex-direction:column;font-size:12px;--acc:var(--crm)}
+html[lang="ar"] .win{font-size:12.5px}
+.win-top{height:38px;flex:none;background:var(--w-bg);border-bottom:1px solid var(--w-bd);display:flex;align-items:center;gap:10px;padding:0 14px}
+.appname{font-weight:600;font-size:13px;font-family:var(--latin)}
+.appname span{color:var(--w-mu);font-weight:400;font-family:var(--body)}
+.spacer{flex:1}
+.searchpill{width:170px;height:22px;border-radius:6px;background:var(--w-soft);display:flex;align-items:center;padding:0 9px;font-size:10px;color:var(--w-mu);white-space:nowrap;overflow:hidden;flex:none}
+.tbtn{width:22px;height:22px;border-radius:6px;background:var(--w-soft);display:grid;place-items:center;font-size:10px;color:var(--w-mu);flex:none}
+.uav{width:24px;height:24px;border-radius:99px;background:linear-gradient(140deg,var(--gold),var(--sadu));flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:10.5px}
+.win-tabs{height:33px;flex:none;background:var(--w-bg);border-bottom:1px solid var(--w-bd);display:flex;align-items:stretch;padding:0 12px;gap:2px}
+.tab{display:flex;align-items:center;padding:0 11px;font-size:11.5px;color:var(--w-mu);border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:var(--acc);border-bottom-color:var(--acc);font-weight:600}
+.win-mid{flex:1;display:flex;min-height:0}
+.rail{width:48px;flex:none;background:#1F2A24;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0}
+.rail [data-app]{width:28px;height:28px;border-radius:8px;background:#fff;padding:5px;opacity:.45;font-size:11px}
+.rail [data-app].nologo{padding:0;background:var(--c);color:#fff}
+.rail [data-app].on{opacity:1;box-shadow:0 0 0 2px var(--c) }
+.win-body{flex:1;padding:14px 16px;min-height:0;overflow:hidden}
+
+.wc{background:var(--w-bg);border:1px solid var(--w-bd);border-radius:9px}
+.wmu{color:var(--w-mu)}
+.lbl{font-size:10.5px;color:var(--w-mu);font-weight:500}
+.ttl{font-weight:700;font-size:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.wbtn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;background:var(--acc);color:#fff;font-size:10.5px;font-weight:600;white-space:nowrap}
+.wbtn.ghost{background:var(--w-bg);color:var(--w-mu);border:1px solid var(--w-bd)}
+.wav{width:30px;height:30px;border-radius:99px;flex:none;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;background:linear-gradient(140deg,var(--gold),var(--sadu))}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.pill.g{background:#E3F4E9;color:#146B39}.pill.r{background:#FBEAE8;color:#A92A20}
+.pill.b{background:#E7F0FC;color:#17569E}.pill.y{background:#FCF1DC;color:#8A5B06}
+.pill.p{background:#EEEAFD;color:#5438CF}.pill.n{background:var(--w-soft);color:var(--w-mu)}
+.dotlive{width:7px;height:7px;border-radius:99px;background:var(--z-green);display:inline-block;animation:ping 2s infinite}
+.wrow{display:flex;align-items:center;gap:10px;padding:8px 11px;border-bottom:1px solid var(--w-bd)}
+.wrow:last-child{border-bottom:0}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:11px}
+.num{font-family:var(--latin);font-weight:700;font-variant-numeric:tabular-nums}
+.big{font-family:var(--latin);font-weight:700;font-size:26px;line-height:1.1}
+.bar{height:7px;border-radius:99px;background:var(--w-soft);overflow:hidden}
+.bar i{display:block;height:100%;width:var(--w);background:var(--c,var(--acc));border-radius:99px;animation:barw 1s ease both;animation-delay:inherit}
+.chan{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:10px;color:#fff;flex:none}
+.sk{height:6px;border-radius:99px;background:#E6E9E2;display:block}
+.check{width:16px;height:16px;border-radius:99px;background:#E3F4E9;color:#146B39;display:grid;place-items:center;font-size:9px;font-weight:700;flex:none}
+.check.wait{background:#FCF1DC;color:#8A5B06}
+.flip{display:inline-block}
+[dir="rtl"] .flip{transform:scaleX(-1)}
+.ltr{direction:ltr;unicode-bidi:isolate}
+bdi{white-space:nowrap}
+
+/* chat */
+.msg{display:flex;gap:9px;align-items:flex-start}
+.msg .who{font-weight:700;font-size:11px}
+.msg .who span{font-weight:400;color:var(--w-mu);font-size:10px;margin-inline-start:6px}
+.msg p{font-size:11.5px;line-height:1.45;margin-top:2px}
+
+/* ════════ sadu thread (signature) ════════ */
+.thread{padding:18px 0 24px;padding-inline-end:230px;display:flex;align-items:center;width:100%}
+.tnode{font-style:normal;position:relative;flex:none;width:16px;height:16px;display:grid;place-items:center}
+.tnode::before{content:"";width:8px;height:8px;transform:rotate(45deg);border:1.5px solid #3D6553;background:var(--ink)}
+.tnode.done::before{background:var(--gold);border-color:var(--gold)}
+.tnode.now::before{width:11px;height:11px;background:var(--text);border-color:var(--text);box-shadow:0 0 0 5px rgba(244,238,223,.12)}
+.tnode.now::after{content:attr(data-l);position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  font-size:12px;font-weight:600;color:var(--text);white-space:nowrap}
+.tseg{flex:1;height:12px;margin:0 3px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,rgba(244,238,223,.16) 0 1px,transparent 1px 6px)}
+.tseg.done{background:var(--sadu-tile) repeat-x;background-size:24px 12px}
+.is-on .tseg.fresh{animation:weave 1.1s .35s cubic-bezier(.4,.1,.2,1) both}
+[dir="rtl"] .is-on .tseg.fresh{animation-name:weaveR}
+@keyframes weave{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes weaveR{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+.sadu-band{height:14px;width:100%;background:var(--sadu-tile) repeat-x;background-size:28px 14px;border-radius:2px}
+
+/* ════════ animations ════════ */
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{opacity:0;transform:scale(.9)}60%{transform:scale(1.02)}100%{opacity:1;transform:scale(1)}}
+@keyframes side{from{opacity:0;transform:translateX(calc(var(--s,1) * -20px))}to{opacity:1;transform:none}}
+@keyframes winIn{from{opacity:0;transform:translateY(24px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(51,168,82,.5)}100%{box-shadow:0 0 0 12px rgba(51,168,82,0)}}
+@keyframes barw{from{width:0}to{width:var(--w)}}
+@keyframes bargrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes drawto{from{stroke-dashoffset:var(--from)}to{stroke-dashoffset:var(--to)}}
+@keyframes rowin{from{opacity:0;transform:translateY(-8px);background:#FFF6DD}60%{background:#FFF6DD}to{opacity:1;transform:none;background:transparent}}
+@keyframes jitter{0%,100%{transform:translate(0,0) rotate(var(--r,0deg))}33%{transform:translate(3px,-3px) rotate(calc(var(--r,0deg) + 1.2deg))}66%{transform:translate(-3px,2px) rotate(calc(var(--r,0deg) - 1.2deg))}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes stamp{0%{opacity:0;transform:scale(1.6) rotate(-14deg)}100%{opacity:.9;transform:scale(1) rotate(-8deg)}}
+
+.is-on [data-a]{opacity:0}
+.is-on [data-a="up"]{animation:up .6s cubic-bezier(.22,.9,.25,1) both}
+.is-on [data-a="fade"]{animation:fade .65s ease both}
+.is-on [data-a="pop"]{animation:pop .5s cubic-bezier(.2,.9,.3,1.15) both}
+.is-on [data-a="side"]{animation:side .52s cubic-bezier(.22,.9,.25,1) both}
+.is-on [data-a="end"]{--s:-1;animation:side .52s cubic-bezier(.22,.9,.25,1) both}
+[dir="rtl"] .is-on [data-a="side"]{--s:-1}
+[dir="rtl"] .is-on [data-a="end"]{--s:1}
+.is-on [data-a="win"]{animation:winIn .7s cubic-bezier(.2,.85,.25,1) both}
+.is-on [data-a="row"]{animation:rowin 1s ease both}
+.is-on [data-a="stamp"]{animation:stamp .45s cubic-bezier(.3,1.4,.5,1) both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;animation-iteration-count:1 !important}}
+
+/* ════════ chrome ════════ */
+#top{position:fixed;top:14px;inset-inline-end:18px;z-index:20;display:flex;align-items:center;gap:14px}
+#brand{font-size:11px;color:#7E9A8B;display:flex;align-items:center;gap:8px}
+#lang{display:flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:rgba(6,35,26,.7)}
+#lang button{border:0;background:none;color:var(--muted);font-size:12px;padding:4px 12px;border-radius:99px;cursor:pointer;font-weight:600}
+#lang button[data-l="ar"]{font-family:var(--ar-body)}
+#lang button[data-l="en"]{font-family:var(--latin)}
+#lang button[aria-pressed="true"]{background:var(--text);color:var(--ink)}
+#lang button:focus-visible,#hud button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#hud{direction:ltr;position:fixed;bottom:12px;inset-inline-end:18px;z-index:20;display:flex;gap:10px;align-items:center;font-size:11px;color:var(--muted);font-family:var(--latin)}
+#hud button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:7px;font:inherit;padding:4px 9px;cursor:pointer}
+#hud button:hover{color:var(--text);border-color:var(--text)}
+#count b{color:var(--text)}
+#grid{position:fixed;inset:0;z-index:30;background:rgba(4,24,17,.97);display:none;grid-template-columns:repeat(4,1fr);gap:12px;padding:34px;align-content:start;overflow:auto}
+#grid.on{display:grid}
+#grid button{aspect-ratio:16/9;border:1px solid var(--line);background:var(--ink2);color:var(--text);border-radius:10px;font-family:var(--display);font-size:15px;font-weight:600;text-align:start;padding:12px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;line-height:1.3}
+#grid button:hover,#grid button:focus-visible{border-color:var(--gold);outline:none}
+#grid button span{font-family:var(--latin);font-size:11px;color:var(--muted)}
+@media (max-width:820px){#top{top:8px;inset-inline-end:8px;gap:8px}#brand{display:none}#hud{bottom:8px;inset-inline-end:8px;font-size:9.5px;gap:6px}#grid{grid-template-columns:repeat(2,1fr);padding:14px}}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <div id="brand"><span class="lg" data-app="zoho"></span><span data-t="Every riyal has a story||لكلِّ ريالٍ أثر"></span></div>
+  <div id="lang" role="group" aria-label="Language">
+    <button data-l="en" aria-pressed="true">English</button>
+    <button data-l="ar" aria-pressed="false">العربية</button>
+  </div>
+</div>
+
+<div id="stage">
+
+<!-- ══════════ 01 COVER ══════════ -->
+<section class="slide hero" data-node="0" data-title="Every riyal has a story||لكلِّ ريالٍ أثر">
+  <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px">
+    <p class="eyebrow" data-a="fade" data-d=".1" data-t="Zoho for Saudi non-profits||زوهو للقطاع غير الربحي في المملكة"></p>
+    <div data-a="up" data-d=".2">
+      <h1 data-t="Every riyal<br>has a story||لكلِّ ريالٍ أثر"></h1>
+      <p class="alt" data-alt="لكلِّ ريالٍ أثر||Every riyal has a story"></p>
+    </div>
+    <div style="width:300px" data-a="fade" data-d=".45"><div class="sadu-band"></div></div>
+    <div style="display:flex;gap:10px;margin-top:2px">
+      <span class="amk" data-app="crm" data-a="pop" data-d=".6"></span>
+      <span class="amk" data-app="campaigns" data-a="pop" data-d=".66"></span>
+      <span class="amk" data-app="books" data-a="pop" data-d=".72"></span>
+      <span class="amk" data-app="sign" data-a="pop" data-d=".78"></span>
+      <span class="amk" data-app="contracts" data-a="pop" data-d=".84"></span>
+      <span class="amk" data-app="people" data-a="pop" data-d=".9"></span>
+      <span class="amk" data-app="cliq" data-a="pop" data-d=".96"></span>
+      <span class="amk" data-app="workdrive" data-a="pop" data-d="1.02"></span>
+      <span class="amk" data-app="analytics" data-a="pop" data-d="1.08"></span>
+    </div>
+    <p class="sub" style="max-width:48ch;font-size:16.5px" data-a="fade" data-d="1.25"
+       data-t="One donor in Riyadh. One family in Al-Kharj. One Ramadan, told through one continuous record.||متبرّعة في الرياض، وأسرة في الخرج، ورمضان واحد نرويه من خلال سجلٍّ واحد متّصل."></p>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 02 THE ASK ══════════ -->
+<section class="slide" data-node="0" data-title="Where does a donation go?||أين يذهب التبرّع؟">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up" data-t="Start here||لنبدأ من هنا"></p>
+      <h2 data-a="up" data-d=".06" data-t="Where does a donation go after it leaves the donor’s phone?||أين يذهب التبرّع بعد أن يغادر جوال المتبرّع؟"></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Most associations can account for the money. Few can tell its whole story.||معظم الجمعيات تعرف أين ذهب المال، وقليلٌ منها يعرف حكايته كاملة."></p>
+  </header>
+  <div class="art">
+    <div class="win">
+      <div class="win-mid">
+        <div style="flex:1;display:grid;grid-template-columns:1.15fr 60px 1fr;align-items:center;padding:22px 30px;background:var(--w-canvas)">
+          <div style="position:relative;height:100%">
+            <span class="lbl" style="position:absolute;top:0;inset-inline-start:2px;font-size:12px" data-t="Today: 8 tools that don’t talk to each other||اليوم: 8 أدوات لا تتحدث مع بعضها"></span>
+            <div style="position:absolute;inset:34px 0 0;font-size:11.5px">
+              <span class="wc" style="position:absolute;inset-inline-start:2%;top:2%;padding:7px 11px;--r:-5deg;animation:jitter 5s infinite" data-t="Bank SMS alerts||رسائل البنك النصية"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:52%;top:0;padding:7px 11px;--r:4deg;animation:jitter 6s .4s infinite" data-t="Donors_2025_final(3).xlsx||المتبرعين_نهائي(3).xlsx"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:6%;top:25%;padding:7px 11px;--r:3deg;animation:jitter 5.5s .8s infinite" data-t="WhatsApp groups||مجموعات واتساب"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:50%;top:24%;padding:7px 11px;--r:-4deg;animation:jitter 6.5s .2s infinite" data-t="Paper receipt book||دفتر السندات الورقي"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:14%;top:48%;padding:7px 11px;--r:-2deg;animation:jitter 5.2s 1s infinite" data-t="Email blast tool||أداة الرسائل الجماعية"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:56%;top:49%;padding:7px 11px;--r:5deg;animation:jitter 6.2s .6s infinite" data-t="Volunteer sign-up form||نموذج تسجيل المتطوعين"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:0;top:72%;padding:7px 11px;--r:4deg;animation:jitter 5.8s .3s infinite" data-t="Shared USB drive||ذاكرة USB مشتركة"></span>
+              <span class="wc" style="position:absolute;inset-inline-start:44%;top:74%;padding:7px 11px;--r:-5deg;animation:jitter 6.8s .9s infinite" data-t="The accountant’s ledger||دفتر المحاسب"></span>
+            </div>
+          </div>
+          <div style="display:grid;place-items:center" data-a="fade" data-d="1.3">
+            <svg class="flip" width="34" height="14" viewBox="0 0 34 14"><path d="M0 7h28M23 2l5 5-5 5" stroke="#8C978F" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="display:grid;place-items:center">
+            <div class="wc" style="width:290px;padding:16px;position:relative" data-a="pop" data-d="1.4">
+              <span class="lbl" style="position:absolute;top:-22px;inset-inline-start:2px;font-size:12px" data-t="Zoho: one donor journey||زوهو: رحلة متبرّع واحدة"></span>
+              <div style="display:flex;gap:11px;align-items:center;margin-bottom:12px">
+                <div class="wav" style="width:40px;height:40px;font-size:16px" data-t="N||ن"></div>
+                <div><div style="font-weight:700;font-size:14.5px" data-t="Noura Al-Qahtani||نورة القحطاني"></div>
+                  <div class="lbl" data-t="Individual donor, Riyadh||متبرّعة فردية، الرياض"></div></div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <span class="chan" style="background:var(--crm)">◆</span><span class="chan" style="background:var(--camp)">✉</span>
+                <span class="chan" style="background:var(--books)">﷼</span><span class="chan" style="background:var(--sign)">✍</span>
+                <span class="chan" style="background:var(--contracts)">§</span><span class="chan" style="background:var(--people)">☺</span>
+                <span class="chan" style="background:var(--cliq)">◍</span><span class="chan" style="background:var(--wd)">▤</span>
+                <span class="chan" style="background:var(--anal)">▦</span>
+              </div>
+              <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+                <span class="lbl" data-t="9 apps, 1 record, 0 re-typing||9 تطبيقات، سجل واحد، بلا إعادة إدخال"></span>
+                <span class="pill g"><i class="dotlive"></i><span data-t="Traceable||قابل للتتبّع"></span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 03 NOURA — CRM donor ══════════ -->
+<section class="slide" data-node="1" data-title="Meet Noura — Zoho CRM||تعرّفوا على نورة — Zoho CRM">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="crm"></span><span data-t="Zoho CRM: donor management||Zoho CRM: إدارة المتبرّعين"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="Noura doesn’t think in systems. She thinks in families.||نورة لا تفكّر في الأنظمة، بل في الأسر التي تساعدها."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Pharmacist in Riyadh, donor since 1443 AH. She pays her Zakat every Ramadan and expects to know where it went.||صيدلانية من الرياض، متبرّعة منذ 1443هـ. تُخرج زكاتها كل رمضان، وتريد أن تعرف أين وصلت."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--crm)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="crm"></span><span class="appname">Zoho CRM <span data-t="· Wasl Charity Association||· جمعية وَصْل الخيرية"></span></span>
+        <div class="spacer"></div><div class="searchpill" data-t="⌕ Search donors, cases||⌕ ابحث عن متبرّع أو حالة"></div><div class="tbtn">🔔</div><div class="uav" data-t="A||ع"></div>
+      </div>
+      <div class="win-tabs">
+        <div class="tab" data-t="Home||الرئيسية"></div><div class="tab on" data-t="Donors||المتبرّعون"></div><div class="tab" data-t="Beneficiaries||المستفيدون"></div>
+        <div class="tab" data-t="Donations||التبرّعات"></div><div class="tab" data-t="Programs||البرامج"></div><div class="tab" data-t="Campaigns||الحملات"></div>
+        <div class="tab" data-t="Reports||التقارير"></div><div class="spacer"></div><div class="tab" style="color:var(--anal)">Zia ✦</div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="crm" class="on"></span><span data-app="campaigns"></span><span data-app="books"></span><span data-app="sign"></span><span data-app="analytics"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:270px 1fr 230px;gap:12px">
+          <div class="wc" style="padding:14px" data-a="side" data-d=".2">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding-bottom:12px;border-bottom:1px solid var(--w-bd)">
+              <div class="wav" style="width:56px;height:56px;font-size:22px" data-t="N||ن"></div>
+              <div style="font-weight:700;font-size:15.5px" data-t="Noura Al-Qahtani||نورة القحطاني"></div>
+              <div class="lbl" data-t="Individual donor · Riyadh, Al-Malqa||متبرّعة فردية · الرياض، حي الملقا"></div>
+              <span class="pill g" data-t="Loyal donor · 4 years||متبرّعة وفيّة · 4 سنوات"></span>
+            </div>
+            <div style="padding-top:11px;display:flex;flex-direction:column;gap:9px">
+              <div class="kv"><span class="wmu" data-t="Donor ID||رقم المتبرّع"></span><span class="ltr">D-10482</span></div>
+              <div class="kv"><span class="wmu" data-t="Mobile||الجوال"></span><span class="ltr">+966 5• ••• 3318</span></div>
+              <div class="kv"><span class="wmu" data-t="Language||اللغة"></span><span data-t="Arabic||العربية"></span></div>
+              <div class="kv"><span class="wmu" data-t="Channel||قناة التواصل"></span><span data-t="Email + SMS||البريد والرسائل"></span></div>
+              <div class="kv"><span class="wmu" data-t="Relationship owner||مسؤول العلاقة"></span><span data-t="Abdulrahman Al-Shehri||عبدالرحمن الشهري"></span></div>
+              <div class="kv"><span class="wmu" data-t="Consent||الموافقة"></span><span class="pill g" style="padding:2px 7px" data-t="PDPL ✓||نظام حماية البيانات ✓"></span></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-rows:1fr auto;gap:12px;min-height:0">
+            <div class="wc" style="padding:14px;display:flex;flex-direction:column" data-a="up" data-d=".32">
+              <div class="ttl"><span data-t="Giving by Hijri year||العطاء حسب السنة الهجرية"></span><span class="lbl"><span data-t="Lifetime||الإجمالي"></span> <b class="num" style="color:var(--w-tx)">7,850</b> <span data-t="SAR||ر.س"></span></span></div>
+              <div style="flex:1;display:flex;align-items:flex-end;gap:18px;padding:0 10px">
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px"><span class="lbl num">1,200</span><div style="width:100%;height:41%;border-radius:6px 6px 0 0;background:#F3C9C3;transform-origin:bottom;animation:bargrow .8s .6s both"></div><span class="lbl">1443</span></div>
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px"><span class="lbl num">1,650</span><div style="width:100%;height:57%;border-radius:6px 6px 0 0;background:#EE9F94;transform-origin:bottom;animation:bargrow .8s .7s both"></div><span class="lbl">1444</span></div>
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px"><span class="lbl num">2,100</span><div style="width:100%;height:72%;border-radius:6px 6px 0 0;background:#E7766A;transform-origin:bottom;animation:bargrow .8s .8s both"></div><span class="lbl">1445</span></div>
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px"><span class="lbl num">2,900</span><div style="width:100%;height:100%;border-radius:6px 6px 0 0;background:var(--crm);transform-origin:bottom;animation:bargrow .8s .9s both"></div><span class="lbl">1446</span></div>
+              </div>
+            </div>
+            <div class="wc" style="padding:12px 14px" data-a="up" data-d=".44">
+              <div class="ttl" style="margin-bottom:8px"><span data-t="How she gives||طبيعة عطائها"></span></div>
+              <div style="display:flex;height:10px;border-radius:99px;overflow:hidden;gap:2px">
+                <i style="width:62%;background:var(--flag)"></i><i style="width:30%;background:var(--gold)"></i><i style="width:8%;background:var(--date)"></i>
+              </div>
+              <div style="display:flex;gap:16px;margin-top:8px" class="lbl">
+                <span>● <span data-t="Zakat 62%||زكاة 62%"></span></span><span>● <span data-t="Sadaqah 30%||صدقة 30%"></span></span><span>● <span data-t="Waqf 8%||وقف 8%"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="wc" style="padding:13px;border-color:#DCD3FB;background:#FAF8FF" data-a="end" data-d=".56">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+              <span style="width:19px;height:19px;border-radius:5px;background:var(--anal);color:#fff;display:grid;place-items:center;font-size:9px">✦</span>
+              <b style="font-size:12px;color:#4B2FBE">Zia</b>
+            </div>
+            <p style="font-size:11.5px;line-height:1.55;color:#3C3560" data-t="Noura gives within <b>48 hours</b> of the first Ramadan appeal. She opens email <b>after Taraweeh, 9:30–11 PM</b>.||تتبرّع نورة خلال <b>48 ساعة</b> من أول نداء رمضاني، وتفتح بريدها <b>بعد صلاة التراويح بين 9:30 و11 مساءً</b>."></p>
+            <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
+              <span class="pill p" style="align-self:flex-start" data-a="up" data-d="1.1" data-t="Next best action||الإجراء المقترح"></span>
+              <p style="font-size:11px;color:#3C3560;line-height:1.5" data-t="Send the Arabic Ramadan appeal on 1 Ramadan. After Eid, invite her to a monthly Kafala.||إرسال نداء رمضان بالعربية في 1 رمضان، ودعوتها بعد العيد إلى كفالة شهرية."></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 04 THE FAMILY — CRM beneficiary ══════════ -->
+<section class="slide" data-node="2" data-title="The family — beneficiaries in CRM||الأسرة — المستفيدون في CRM">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="crm"></span><span data-t="Zoho CRM: beneficiary management||Zoho CRM: إدارة المستفيدين"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="And the family on the other side of her gift.||وعلى الطرف الآخر من عطائها، أسرة."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Case files live in the same CRM, with dignity built in: masked identities, verified eligibility, access by role.||ملفات الحالات في النظام نفسه، مع صون الكرامة: هوية مخفية، واستحقاق موثّق، وصلاحيات حسب الدور."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--crm)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="crm"></span><span class="appname">Zoho CRM <span data-t="· Beneficiaries › BEN-2291||· المستفيدون › <bdi>BEN-2291</bdi>"></span></span>
+        <div class="spacer"></div><span class="pill r" style="margin-inline-end:6px">🔒 <span data-t="Restricted record||سجل مقيّد"></span></span><div class="uav" data-t="R||ر"></div>
+      </div>
+      <div class="win-tabs">
+        <div class="tab" data-t="Donors||المتبرّعون"></div><div class="tab on" data-t="Beneficiaries||المستفيدون"></div><div class="tab" data-t="Home visits||الزيارات الميدانية"></div>
+        <div class="tab" data-t="Eligibility||الاستحقاق"></div><div class="tab" data-t="Aid given||المساعدات المقدّمة"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="crm" class="on"></span><span data-app="workdrive"></span><span data-app="people"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:250px 1fr 260px;gap:12px">
+          <div class="wc" style="padding:14px" data-a="side" data-d=".2">
+            <div style="display:flex;gap:11px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--w-bd)">
+              <div class="wav" style="width:44px;height:44px;background:#C9D2CB;font-size:18px">⌂</div>
+              <div><div style="font-weight:700;font-size:14px" class="ltr">BEN-2291</div>
+                <div class="lbl" data-t="Family of 6 · Al-Kharj||أسرة من 6 أفراد · الخرج"></div></div>
+            </div>
+            <div style="padding-top:11px;display:flex;flex-direction:column;gap:9px">
+              <div class="kv"><span class="wmu" data-t="Head of household||ربّ الأسرة"></span><span>م. ع. ••••</span></div>
+              <div class="kv"><span class="wmu" data-t="Category||الفئة"></span><span data-t="Needy (al-masakin)||المساكين"></span></div>
+              <div class="kv"><span class="wmu" data-t="Fund eligibility||مصدر التمويل"></span><span class="pill g" style="padding:2px 7px" data-t="Zakat-eligible||مستحق للزكاة"></span></div>
+              <div class="kv"><span class="wmu" data-t="Case worker||الباحثة الاجتماعية"></span><span data-t="Reem Al-Dosari||ريم الدوسري"></span></div>
+              <div class="kv"><span class="wmu" data-t="Next review||المراجعة القادمة"></span><span data-t="Muharram 1448||محرّم 1448هـ"></span></div>
+            </div>
+            <div style="margin-top:12px;padding:10px;border-radius:8px;background:#FBF6EA;border:1px solid #EFDFB8;font-size:11px;line-height:1.45" data-a="up" data-d="1.2" data-t="Linked gift: <b>1 food basket</b> funded by donor D-10482. The family never sees the donor’s name.||التبرّع المرتبط: <b>سلة غذائية</b> من المتبرّع <bdi>D-10482</bdi>، ولا يظهر اسم المتبرّع للأسرة."></div>
+          </div>
+          <div class="wc" style="padding:14px" data-a="up" data-d=".34">
+            <div class="ttl"><span data-t="Eligibility checklist||قائمة التحقق من الاستحقاق"></span><span class="pill g" data-t="Approved||معتمد"></span></div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div class="wrow" data-a="up" data-d=".5"><span class="check">✓</span><span style="flex:1" data-t="National ID verified||التحقق من الهوية الوطنية"></span><span class="lbl" data-t="2 Sha’ban||2 شعبان"></span></div>
+              <div class="wrow" data-a="up" data-d=".6"><span class="check">✓</span><span style="flex:1" data-t="Income documents reviewed||مراجعة مستندات الدخل"></span><span class="lbl" data-t="5 Sha’ban||5 شعبان"></span></div>
+              <div class="wrow" data-a="up" data-d=".7"><span class="check">✓</span><span style="flex:1" data-t="Home visit completed||إتمام الزيارة الميدانية"></span><span class="lbl" data-t="12 Sha’ban||12 شعبان"></span></div>
+              <div class="wrow" data-a="up" data-d=".8"><span class="check">✓</span><span style="flex:1" data-t="Zakat committee approval||اعتماد لجنة الزكاة"></span><span class="lbl" data-t="20 Sha’ban||20 شعبان"></span></div>
+            </div>
+            <div class="ttl" style="margin:14px 0 8px"><span data-t="Needs this season||احتياجات الموسم"></span></div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div class="kv" data-a="up" data-d=".9"><span data-t="🧺 Ramadan food basket||🧺 سلة رمضان الغذائية"></span><span class="pill g" data-t="Funded||ممَوَّلة"></span></div>
+              <div class="kv" data-a="up" data-d="1"><span data-t="🎒 School supplies, Shawwal||🎒 مستلزمات مدرسية، شوال"></span><span class="pill y" data-t="Open||مفتوحة"></span></div>
+              <div class="kv" data-a="up" data-d="1.1"><span data-t="🏠 Rent support||🏠 دعم الإيجار"></span><span class="pill n" data-t="Under review||قيد الدراسة"></span></div>
+            </div>
+          </div>
+          <div class="wc" style="padding:14px" data-a="end" data-d=".5">
+            <div class="ttl"><span data-t="Who sees what||من يرى ماذا"></span><span class="lbl">🔒</span></div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:11px;line-height:1.4">
+              <div><b data-t="Case worker||الباحثة الاجتماعية"></b><div class="wmu" data-t="Full file and documents||الملف كاملاً مع المستندات"></div></div>
+              <div><b data-t="Donor relations||علاقات المتبرّعين"></b><div class="wmu" data-t="Needs and region only, no identity||الاحتياج والمنطقة فقط، دون الهوية"></div></div>
+              <div><b data-t="Finance||المالية"></b><div class="wmu" data-t="Case ID, fund and amounts||رقم الحالة والصندوق والمبالغ"></div></div>
+              <div><b data-t="Volunteers||المتطوعون"></b><div class="wmu" data-t="Delivery address, on delivery day only||عنوان التسليم، يوم التوزيع فقط"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 05 CAMPAIGNS — Ramadan appeal ══════════ -->
+<section class="slide" data-node="3" data-title="The appeal — Zoho Campaigns||النداء — Zoho Campaigns">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="campaigns"></span><span data-t="Zoho Campaigns: fundraising outreach||Zoho Campaigns: حملات جمع التبرعات"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="The Ramadan appeal reaches her after Taraweeh, in Arabic.||نداء رمضان يصلها بعد التراويح، وبالعربية."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="One segment built straight from CRM: Zakat donors in Riyadh who prefer Arabic.||شريحة مبنيّة مباشرة من CRM: متبرّعو الزكاة في الرياض ممّن يفضّلون العربية."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--camp)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="campaigns"></span><span class="appname">Zoho Campaigns <span data-t="· Ramadan Food Basket 1447||· سلة الخير الرمضانية 1447"></span></span>
+        <div class="spacer"></div><span class="pill g"><i class="dotlive"></i><span data-t="Sent||تم الإرسال"></span></span><div class="uav" data-t="A||ع"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="campaigns" class="on"></span><span data-app="crm"></span><span data-app="analytics"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:1fr 1fr 300px;gap:12px">
+          <div class="wc" style="padding:14px;display:flex;flex-direction:column;gap:11px" data-a="side" data-d=".2">
+            <div class="ttl" style="margin:0"><span data-t="Campaign setup||إعداد الحملة"></span></div>
+            <div>
+              <div class="lbl" data-t="Audience, synced from Zoho CRM||الجمهور، مُزامَن من Zoho CRM"></div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+                <span class="pill g" data-t="Fund: Zakat||الصندوق: زكاة"></span><span class="pill b" data-t="City: Riyadh||المدينة: الرياض"></span><span class="pill p" data-t="Language: Arabic||اللغة: العربية"></span>
+              </div>
+              <div style="margin-top:7px"><span class="big" data-count="8420">0</span> <span class="lbl" data-t="donors||متبرّع"></span></div>
+            </div>
+            <div style="border-top:1px solid var(--w-bd);padding-top:10px;display:flex;flex-direction:column;gap:9px">
+              <div class="lbl" data-t="Send schedule, Riyadh time||جدول الإرسال بتوقيت الرياض"></div>
+              <div class="kv"><span data-t="🌙 Launch appeal||🌙 إطلاق النداء"></span><span class="wmu" data-t="1 Ramadan · 9:45 PM||1 رمضان · 9:45 م"></span></div>
+              <div class="kv"><span data-t="Last ten nights reminder||تذكير العشر الأواخر"></span><span class="wmu" data-t="21 Ramadan · 9:45 PM||21 رمضان · 9:45 م"></span></div>
+              <div class="kv"><span data-t="Night 27 message||رسالة ليلة 27"></span><span class="wmu" data-t="27 Ramadan · 10:15 PM||27 رمضان · 10:15 م"></span></div>
+              <div class="kv"><span data-t="Eid thank-you + impact||شكر العيد مع الأثر"></span><span class="wmu" data-t="1 Shawwal · 8:00 AM||1 شوال · 8:00 ص"></span></div>
+            </div>
+            <div style="margin-top:auto;padding:9px 10px;border-radius:8px;background:#FCF1DC;font-size:11px;line-height:1.4;color:#6D4905" data-t="Timed after Taraweeh, when Noura’s segment actually reads.||الإرسال بعد التراويح، في الوقت الذي تقرأ فيه هذه الشريحة فعلاً."></div>
+          </div>
+          <div class="wc" style="padding:14px;display:flex;flex-direction:column" data-a="up" data-d=".34">
+            <div class="ttl"><span data-t="First 24 hours||أول 24 ساعة"></span></div>
+            <div style="display:flex;flex-direction:column;gap:13px">
+              <div><div class="kv" style="margin-bottom:5px"><span data-t="Delivered||وصلت"></span><b class="num">99.1%</b></div><div class="bar" style="animation-delay:.7s"><i style="--w:99%;--c:#9AA79E"></i></div></div>
+              <div><div class="kv" style="margin-bottom:5px"><span data-t="Opened||فُتحت"></span><b class="num">48.6%</b></div><div class="bar" style="animation-delay:.85s"><i style="--w:48.6%;--c:var(--camp)"></i></div></div>
+              <div><div class="kv" style="margin-bottom:5px"><span data-t="Clicked donate||نقر على تبرّع"></span><b class="num">17.2%</b></div><div class="bar" style="animation-delay:1s"><i style="--w:17.2%;--c:var(--crm)"></i></div></div>
+            </div>
+            <div style="margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:9px">
+              <div style="padding:10px;border-radius:8px;background:var(--w-soft)"><div class="lbl" data-t="Donations||التبرّعات"></div><div class="big" data-count="1312">0</div></div>
+              <div style="padding:10px;border-radius:8px;background:#E3F4E9"><div class="lbl" data-t="Raised, SAR||المُحصَّل، ر.س"></div><div class="big" style="color:#146B39" data-count="412600">0</div></div>
+            </div>
+          </div>
+          <!-- the email itself, always in the donor's language -->
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0" data-a="end" data-d=".5">
+            <div style="width:214px;height:calc(100% - 24px);max-height:400px;border-radius:30px;background:#111;padding:9px;box-shadow:0 18px 40px -14px rgba(0,0,0,.5)">
+              <div dir="rtl" lang="ar" style="width:100%;height:100%;border-radius:22px;overflow:hidden;background:#fff;font-family:var(--ar-body);display:flex;flex-direction:column">
+                <div style="background:var(--ink);color:var(--text);padding:14px 14px 10px">
+                  <div style="font-size:10px;color:var(--gold)">جمعية وَصْل الخيرية</div>
+                  <div style="font-family:var(--ar-display);font-size:19px;line-height:1.35;margin-top:4px">رمضان كريم يا نورة 🌙</div>
+                </div>
+                <div class="sadu-band" style="height:9px;background-size:18px 9px;border-radius:0"></div>
+                <div style="padding:12px 14px;display:flex;flex-direction:column;gap:9px;flex:1">
+                  <div style="font-size:13px;font-weight:700;line-height:1.5">سلّتك تصل إلى أسرةٍ قبل الإفطار</div>
+                  <div style="font-size:11px;line-height:1.6;color:#55605A">كل 250 ريال تكفي أسرةً سلّةً غذائية طوال الشهر، وتُصرف زكاتك في مصارفها الشرعية فقط.</div>
+                  <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+                    <span style="background:var(--flag);color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:12px;font-weight:700">أخرِج زكاتك</span>
+                    <span style="border:1px solid #CFD6D1;border-radius:8px;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#2F3A33">تصدّق بما تيسّر</span>
+                  </div>
+                  <div style="margin-top:auto;font-size:9px;color:#8A948E;line-height:1.5">جمعية مسجّلة لدى المركز الوطني لتنمية القطاع غير الربحي · ترخيص 4417</div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:10.5px;color:var(--w-mu);margin-top:8px" data-t="Sent in Noura’s preferred language||مُرسلة بلغة نورة المفضّلة"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 06 BOOKS — gift, fund, ZATCA ══════════ -->
+<section class="slide" data-node="4" data-title="The gift — Zoho Books||التبرّع — Zoho Books">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="books"></span><span data-t="Zoho Books: donation tracking and ZATCA-ready finance||Zoho Books: تتبّع التبرعات ومالية متوافقة مع الزكاة والضريبة"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="Her 500 riyals land in the right fund, with a receipt in seconds.||500 ريال تصل إلى الصندوق الصحيح، مع إيصال خلال ثوانٍ."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Zakat stays restricted to Zakat-eligible programs. Taxable income is e-invoiced to ZATCA.||تبقى الزكاة مقيّدة في مصارفها، وتُفوتَر الإيرادات الخاضعة للضريبة إلكترونياً وفق متطلبات هيئة الزكاة والضريبة والجمارك."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--books)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="books"></span><span class="appname">Zoho Books <span data-t="· Payments received||· المقبوضات"></span></span>
+        <div class="spacer"></div><span class="pill b" style="margin-inline-end:6px" data-t="Fiscal year 1447||السنة المالية 1447"></span><div class="uav" data-t="H||ه"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="books" class="on"></span><span data-app="crm"></span><span data-app="analytics"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:1.05fr 1fr 250px;gap:12px">
+          <div class="wc" style="display:flex;flex-direction:column;min-height:0" data-a="side" data-d=".2">
+            <div class="wrow" style="font-weight:700"><span style="flex:1" data-t="Today’s donations||تبرّعات اليوم"></span><span class="lbl" data-t="1 Ramadan||1 رمضان"></span></div>
+            <div class="wrow" data-a="row" data-d=".9" style="background:#FFFBEF">
+              <div class="wav" style="width:26px;height:26px;font-size:11px" data-t="N||ن"></div>
+              <div style="flex:1;min-width:0"><b data-t="Noura Al-Qahtani||نورة القحطاني"></b><div class="lbl" data-t="Mada · 9:52 PM||مدى · 9:52 م"></div></div>
+              <div style="text-align:end"><b class="num">500.00</b><div><span class="pill g" style="padding:1px 7px" data-t="Zakat||زكاة"></span></div></div>
+            </div>
+            <div class="wrow">
+              <div class="wav" style="width:26px;height:26px;font-size:11px;background:#B9C4BC">?</div>
+              <div style="flex:1"><b data-t="Anonymous donor||فاعل خير"></b><div class="lbl" data-t="Apple Pay · 9:48 PM||Apple Pay · 9:48 م"></div></div>
+              <div style="text-align:end"><b class="num">1,000.00</b><div><span class="pill y" style="padding:1px 7px" data-t="Sadaqah||صدقة"></span></div></div>
+            </div>
+            <div class="wrow">
+              <div class="wav" style="width:26px;height:26px;font-size:11px;background:var(--contracts)" data-t="R||ر"></div>
+              <div style="flex:1"><b data-t="Rayhan Pharma||ريحان فارما"></b><div class="lbl" data-t="Bank transfer · 4:10 PM||تحويل بنكي · 4:10 م"></div></div>
+              <div style="text-align:end"><b class="num">25,000.00</b><div><span class="pill b" style="padding:1px 7px" data-t="Program grant||منحة برنامج"></span></div></div>
+            </div>
+            <div class="wrow">
+              <div class="wav" style="width:26px;height:26px;font-size:11px" data-t="S||س"></div>
+              <div style="flex:1"><b data-t="Sultan Al-Mutairi||سلطان المطيري"></b><div class="lbl" data-t="Mada · 3:22 PM||مدى · 3:22 م"></div></div>
+              <div style="text-align:end"><b class="num">250.00</b><div><span class="pill g" style="padding:1px 7px" data-t="Zakat||زكاة"></span></div></div>
+            </div>
+            <div class="wrow" style="margin-top:auto;border-top:1px solid var(--w-bd)"><span class="lbl" style="flex:1" data-t="Auto-matched to donor records in CRM||مطابقة تلقائية مع سجلات المتبرّعين في CRM"></span><span class="check">✓</span></div>
+          </div>
+          <div class="wc" style="padding:16px;position:relative;display:flex;flex-direction:column" data-a="up" data-d=".4">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:10px;border-bottom:1px dashed var(--w-bd)">
+              <div><b style="font-size:14px" data-t="Donation receipt||إيصال تبرّع"></b><div class="lbl ltr">DON-1447-08812</div></div>
+              <div style="text-align:end;font-size:10.5px"><b data-t="Wasl Charity Association||جمعية وَصْل الخيرية"></b><div class="lbl" data-t="NCNP licence 4417||ترخيص المركز الوطني 4417"></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;padding:12px 0">
+              <div class="kv"><span class="wmu" data-t="Received from||استلمنا من"></span><b data-t="Noura Al-Qahtani||نورة القحطاني"></b></div>
+              <div class="kv"><span class="wmu" data-t="Date||التاريخ"></span><span data-t="1 Ramadan 1447||1 رمضان 1447هـ"></span></div>
+              <div class="kv"><span class="wmu" data-t="Fund||الصندوق"></span><span data-t="Zakat, restricted||الزكاة (مقيّد)"></span></div>
+              <div class="kv"><span class="wmu" data-t="Program||البرنامج"></span><span data-t="Ramadan food baskets||سلال رمضان الغذائية"></span></div>
+              <div class="kv"><span class="wmu" data-t="VAT||ضريبة القيمة المضافة"></span><span data-t="Outside scope, donation||خارج النطاق (تبرّع)"></span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:8px;background:var(--w-soft)">
+              <span data-t="Amount||المبلغ"></span><span><b class="num" style="font-size:18px">500.00</b> <span data-t="SAR||ر.س"></span></span>
+            </div>
+            <div style="margin-top:auto;display:flex;gap:6px;padding-top:10px">
+              <span class="pill g" data-a="pop" data-d="1.2" data-t="✓ Emailed in Arabic||✓ أُرسل بالبريد بالعربية"></span>
+              <span class="pill g" data-a="pop" data-d="1.35" data-t="✓ SMS sent||✓ رسالة نصية"></span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+            <div class="wc" style="padding:13px" data-a="end" data-d=".55">
+              <div class="ttl"><span data-t="Fund balances, SAR||أرصدة الصناديق، ر.س"></span></div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div><div class="kv" style="margin-bottom:4px"><span data-t="Zakat · restricted||الزكاة · مقيّد"></span><b class="num">612,400</b></div><div class="bar" style="animation-delay:.9s"><i style="--w:53%;--c:var(--flag)"></i></div></div>
+                <div><div class="kv" style="margin-bottom:4px"><span data-t="Sadaqah · general||الصدقات · عام"></span><b class="num">318,900</b></div><div class="bar" style="animation-delay:1s"><i style="--w:28%;--c:var(--gold)"></i></div></div>
+                <div><div class="kv" style="margin-bottom:4px"><span data-t="Waqf · endowment||الوقف"></span><b class="num">1,150,000</b></div><div class="bar" style="animation-delay:1.1s"><i style="--w:100%;--c:var(--date)"></i></div></div>
+              </div>
+            </div>
+            <div class="wc" style="padding:13px;flex:1;display:flex;gap:11px;align-items:center;border-color:#BFDDF2;background:#F5FAFE" data-a="end" data-d=".7">
+              <svg width="58" height="58" viewBox="0 0 7 7" shape-rendering="crispEdges" style="flex:none;background:#fff;padding:3px;border:1px solid var(--w-bd);border-radius:4px"><path fill="#20271F" d="M0 0h3v3H0zM4 0h3v3H4zM0 4h3v3H0zM1 1h1v1H1zM5 1h1v1H5zM1 5h1v1H1z M4 4h1v1H4zM6 4h1v2H6zM4 6h2v1H4zM5 5h1v1H5z" fill-rule="evenodd"/></svg>
+              <div style="font-size:10.5px;line-height:1.45">
+                <b data-t="Charity bazaar invoice||فاتورة البازار الخيري"></b>
+                <div class="wmu ltr">INV-2207 · 1,150.00</div>
+                <div class="wmu" data-t="Incl. 15% VAT||شاملة ضريبة 15%"></div>
+                <span class="pill b" style="margin-top:4px" data-t="Reported to ZATCA ✓||مُبلَّغة للهيئة ✓"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 07 SIGN & CONTRACTS — employer match ══════════ -->
+<section class="slide" data-node="5" data-title="The pledge — Zoho Sign & Contracts||الشراكة — Zoho Sign وContracts">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="sign"></span><span class="lg" data-app="contracts"></span><span data-t="Zoho Sign & Zoho Contracts: validate and authenticate||Zoho Sign وZoho Contracts: توثيق واعتماد المستندات"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="Her employer doubles it. The agreement is signed before Iftar.||جهة عملها تُضاعف تبرّعها، والاتفاقية تُوقَّع قبل الإفطار."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Rayhan Pharma matches employee gifts 1:1. Contracts tracks every obligation; Sign collects every signature.||ريحان فارما تُطابق تبرّعات موظفيها 1:1. يتابع Contracts كل التزام، ويجمع Sign كل توقيع."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--sign)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="contracts"></span><span class="appname">Zoho Contracts <span data-t="· Community partnership · Rayhan Pharma||· شراكة مجتمعية · ريحان فارما"></span></span>
+        <div class="spacer"></div><span class="pill g" data-a="pop" data-d="2" data-t="Active||سارية"></span><div class="uav" data-t="A||ع"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="contracts" class="on"></span><span data-app="sign"></span><span data-app="crm"></span><span data-app="workdrive"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:1fr 280px;gap:14px;background:#E9ECE7">
+          <!-- document -->
+          <div style="display:grid;place-items:center;min-height:0">
+            <div class="wc" style="width:470px;height:100%;padding:22px 26px;border-radius:4px;box-shadow:0 10px 28px -12px rgba(0,0,0,.25);position:relative;display:flex;flex-direction:column" data-a="up" data-d=".25">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:9.5px;color:var(--w-mu);line-height:1.4"><b style="color:var(--w-tx)" data-t="Wasl Charity Association||جمعية وَصْل الخيرية"></b><br><span data-t="Riyadh · Licence 4417||الرياض · ترخيص 4417"></span></div>
+                <div class="sadu-band" style="width:70px;height:8px;background-size:16px 8px"></div>
+              </div>
+              <div style="text-align:center;margin:14px 0 4px;font-weight:700;font-size:15px" data-t="Community Partnership Agreement||اتفاقية شراكة مجتمعية"></div>
+              <div class="lbl" style="text-align:center" data-t="Employee donation matching programme||برنامج مطابقة تبرّعات الموظفين"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;font-size:10.5px">
+                <div style="padding:8px;background:var(--w-soft);border-radius:6px"><div class="lbl" data-t="Match ratio||نسبة المطابقة"></div><b>1 : 1</b></div>
+                <div style="padding:8px;background:var(--w-soft);border-radius:6px"><div class="lbl" data-t="Annual cap||السقف السنوي"></div><b class="num">250,000</b> <span data-t="SAR||ر.س"></span></div>
+                <div style="padding:8px;background:var(--w-soft);border-radius:6px"><div class="lbl" data-t="Term||المدة"></div><b data-t="1 Ramadan 1447 – 30 Sha’ban 1448||1 رمضان 1447 – 30 شعبان 1448"></b></div>
+                <div style="padding:8px;background:var(--w-soft);border-radius:6px"><div class="lbl" data-t="Reporting||التقارير"></div><b data-t="Quarterly impact report||تقرير أثر ربع سنوي"></b></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <i class="sk" style="width:96%"></i><i class="sk" style="width:88%"></i><i class="sk" style="width:92%"></i><i class="sk" style="width:60%"></i>
+              </div>
+              <div style="margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div style="border-top:1px solid var(--w-bd);padding-top:7px;position:relative">
+                  <svg width="120" height="34" viewBox="0 0 120 34" style="display:block"><path d="M4 26 C18 4, 26 30, 40 14 S62 8, 70 22 S96 10, 116 12" stroke="#2A3BB0" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="200" style="--from:200;--to:0;animation:drawto 1s .9s ease both"/></svg>
+                  <div class="lbl" data-t="Khalid Al-Rashid, CEO, Rayhan Pharma||خالد الراشد، الرئيس التنفيذي، ريحان فارما"></div>
+                </div>
+                <div style="border-top:1px solid var(--w-bd);padding-top:7px;position:relative">
+                  <svg width="120" height="34" viewBox="0 0 120 34" style="display:block"><path d="M6 20 C20 30, 30 4, 46 18 S70 28, 84 12 S104 18, 114 20" stroke="#2A3BB0" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="200" style="--from:200;--to:0;animation:drawto 1s 1.6s ease both"/></svg>
+                  <div class="lbl" data-t="Hessa Al-Subaie, General Manager, Wasl||حصة السبيعي، المديرة العامة، وَصْل"></div>
+                  <div data-a="stamp" data-d="2.1" style="position:absolute;inset-inline-end:-6px;top:-30px;width:66px;height:66px;border-radius:99px;border:2px solid var(--flag);color:var(--flag);display:grid;place-items:center;text-align:center;font-size:8.5px;font-weight:700;line-height:1.25" data-t="WASL<br>SIGNED<br>✓||وَصْل<br>مُوقَّع<br>✓"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;min-height:0">
+            <div class="wc" style="padding:13px" data-a="end" data-d=".5">
+              <div class="ttl"><span data-t="Obligations tracked||الالتزامات المتابَعة"></span><span class="lg" data-app="contracts"></span></div>
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:11px">
+                <div class="kv"><span data-t="Q1 impact report to Rayhan||تقرير الأثر للربع الأول"></span><span class="pill y" data-t="30 Shawwal||30 شوال"></span></div>
+                <div class="kv"><span data-t="Logo use needs approval||استخدام الشعار بموافقة"></span><span class="pill n" data-t="Clause 7||البند 7"></span></div>
+                <div class="kv"><span data-t="Match cap used||المستخدم من السقف"></span><b class="num">38%</b></div>
+                <div class="kv"><span data-t="Renewal reminder||تذكير التجديد"></span><span class="pill b" data-t="60 days before||قبل 60 يوماً"></span></div>
+              </div>
+            </div>
+            <div class="wc" style="padding:13px;flex:1" data-a="end" data-d=".65">
+              <div class="ttl"><span data-t="Zoho Sign audit trail||سجل التدقيق في Zoho Sign"></span><span class="lg" data-app="sign"></span></div>
+              <div style="display:flex;flex-direction:column;gap:9px;font-size:10.5px">
+                <div class="kv" data-a="up" data-d=".8"><span data-t="Sent for signature||أُرسلت للتوقيع"></span><span class="wmu" data-t="3 Ramadan · 11:02||3 رمضان · 11:02"></span></div>
+                <div class="kv" data-a="up" data-d=".95"><span data-t="Signed · Rayhan Pharma||وقّعت ريحان فارما"></span><span class="wmu" data-t="14:12 · OTP ✓||14:12 · رمز تحقق ✓"></span></div>
+                <div class="kv" data-a="up" data-d="1.6"><span data-t="Signed · Wasl||وقّعت وَصْل"></span><span class="wmu" data-t="16:40 · OTP ✓||16:40 · رمز تحقق ✓"></span></div>
+                <div class="kv" data-a="up" data-d="2.1"><b data-t="Completion certificate||شهادة الإتمام"></b><span class="pill g" data-t="Filed to WorkDrive||حُفظت في WorkDrive"></span></div>
+              </div>
+              <div style="margin-top:12px;padding:9px 10px;border-radius:8px;background:#EEF0FE;color:#3440A8;font-size:11px;line-height:1.45" data-a="fade" data-d="2.3" data-t="Noura’s 500 is now matched: <b>1,000 SAR</b>, 4 baskets.||تبرّع نورة بـ500 ريال أصبح مُطابَقاً: <b>1,000 ر.س</b>، أي 4 سلال."></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 08 PEOPLE — volunteers ══════════ -->
+<section class="slide" data-node="6" data-title="The volunteers — Zoho People||المتطوعون — Zoho People">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="people"></span><span data-t="Zoho People: volunteer and HR management||Zoho People: إدارة المتطوعين والموارد البشرية"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="Sixty volunteers, one distribution day, no spreadsheets.||ستون متطوعاً، يوم توزيع واحد، بلا جداول بيانات."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Shifts are planned around prayer times and Iftar. Every hour lands on the volunteer’s record.||تُخطَّط الورديات حول أوقات الصلاة والإفطار، وتُسجَّل كل ساعة في ملف المتطوع."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--people)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="people"></span><span class="appname">Zoho People <span data-t="· Shifts · 20 Ramadan · Al-Kharj warehouse||· الورديات · 20 رمضان · مستودع الخرج"></span></span>
+        <div class="spacer"></div><span class="pill y" style="margin-inline-end:6px" data-t="🌙 Maghrib 6:04 PM||🌙 المغرب 6:04 م"></span><div class="uav" data-t="L||ل"></div>
+      </div>
+      <div class="win-tabs">
+        <div class="tab" data-t="Volunteers||المتطوعون"></div><div class="tab on" data-t="Shifts||الورديات"></div><div class="tab" data-t="Attendance||الحضور"></div>
+        <div class="tab" data-t="Hours & certificates||الساعات والشهادات"></div><div class="tab" data-t="Staff leave||إجازات الموظفين"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="people" class="on"></span><span data-app="cliq"></span><span data-app="crm"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:1.1fr 1fr 230px;gap:12px">
+          <div class="wc" style="padding:14px" data-a="side" data-d=".2">
+            <div class="ttl"><span data-t="Today’s shifts||ورديات اليوم"></span><span class="lbl" data-t="58 / 60 filled||58 من 60"></span></div>
+            <div style="position:relative;display:flex;flex-direction:column;gap:10px">
+              <div style="padding:10px 12px;border-radius:8px;background:#FCEFF4;border-inline-start:3px solid var(--people)" data-a="up" data-d=".4">
+                <div class="kv"><b data-t="📦 Packing baskets||📦 تعبئة السلال"></b><span class="wmu" data-t="10:00 – 12:30||10:00 – 12:30"></span></div>
+                <div class="kv" style="margin-top:6px"><span class="lbl" data-t="Before Dhuhr||قبل الظهر"></span><span class="pill g" style="padding:1px 7px">24 / 24</span></div>
+              </div>
+              <div style="padding:10px 12px;border-radius:8px;background:#FCEFF4;border-inline-start:3px solid var(--people)" data-a="up" data-d=".5">
+                <div class="kv"><b data-t="🚚 Loading vans||🚚 تحميل الشاحنات"></b><span class="wmu" data-t="1:00 – 3:00 PM||1:00 – 3:00 م"></span></div>
+                <div class="kv" style="margin-top:6px"><span class="lbl" data-t="After Dhuhr||بعد الظهر"></span><span class="pill g" style="padding:1px 7px">14 / 14</span></div>
+              </div>
+              <div style="padding:10px 12px;border-radius:8px;background:#FFF7E6;border-inline-start:3px solid var(--gold)" data-a="up" data-d=".6">
+                <div class="kv"><b data-t="🏠 Door-to-door delivery||🏠 التوصيل للمنازل"></b><span class="wmu" data-t="3:45 – 5:45 PM||3:45 – 5:45 م"></span></div>
+                <div class="kv" style="margin-top:6px"><span class="lbl" data-t="After Asr, home before Iftar||بعد العصر، والعودة قبل الإفطار"></span><span class="pill y" style="padding:1px 7px">20 / 22</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="wc" style="display:flex;flex-direction:column" data-a="up" data-d=".35">
+            <div class="wrow" style="font-weight:700"><span style="flex:1" data-t="Check-ins, delivery shift||الحضور، وردية التوصيل"></span><span class="dotlive"></span></div>
+            <div class="wrow" data-a="row" data-d="1"><div class="wav" style="width:26px;height:26px;font-size:11px;background:var(--people)" data-t="T||ت"></div><div style="flex:1"><b data-t="Turki Al-Anazi||تركي العنزي"></b><div class="lbl" data-t="Driver · Van 3||سائق · الشاحنة 3"></div></div><span class="lbl">3:41</span></div>
+            <div class="wrow"><div class="wav" style="width:26px;height:26px;font-size:11px;background:var(--people)" data-t="L||ل"></div><div style="flex:1"><b data-t="Lama Al-Zahrani||لمى الزهراني"></b><div class="lbl" data-t="Team lead · South route||قائدة فريق · المسار الجنوبي"></div></div><span class="lbl">3:38</span></div>
+            <div class="wrow"><div class="wav" style="width:26px;height:26px;font-size:11px;background:var(--people)" data-t="F||ف"></div><div style="flex:1"><b data-t="Faisal Al-Harbi||فيصل الحربي"></b><div class="lbl" data-t="Delivery · Van 3||توصيل · الشاحنة 3"></div></div><span class="lbl">3:44</span></div>
+            <div class="wrow"><div class="wav" style="width:26px;height:26px;font-size:11px;background:var(--people)" data-t="S||ش"></div><div style="flex:1"><b data-t="Shahad Al-Ghamdi||شهد الغامدي"></b><div class="lbl" data-t="Delivery · Van 5||توصيل · الشاحنة 5"></div></div><span class="lbl">3:40</span></div>
+            <div class="wrow"><div class="wav" style="width:26px;height:26px;font-size:11px;background:#C9D2CB" data-t="+||+"></div><div style="flex:1" class="wmu" data-t="2 open spots offered to the standby list||مقعدان متاحان لقائمة الاحتياط"></div><span class="wbtn" style="padding:3px 9px" data-t="Notify||إشعار"></span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="wc" style="padding:13px" data-a="end" data-d=".5">
+              <div class="lbl" data-t="Volunteers this Ramadan||متطوعو هذا الرمضان"></div>
+              <div class="big" data-count="612">0</div>
+            </div>
+            <div class="wc" style="padding:13px" data-a="end" data-d=".6">
+              <div class="lbl" data-t="Hours logged||الساعات المسجّلة"></div>
+              <div class="big" style="color:var(--people)" data-count="1860">0</div>
+            </div>
+            <div class="wc" style="padding:13px;flex:1;background:#EFF7F1;border-color:#C7E3CF;font-size:11px;line-height:1.5" data-a="end" data-d=".7">
+              <b style="color:#146B39" data-t="Every hour counts||كل ساعة محسوبة"></b>
+              <p style="margin-top:4px" data-t="Hours roll up into certificates at season end, and into reporting toward Vision 2030’s goal of one million volunteers.||تُجمع الساعات في شهادات نهاية الموسم، وفي تقارير تدعم مستهدف رؤية 2030 بالوصول إلى مليون متطوع."></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 09 CLIQ + WORKDRIVE — delivery day ══════════ -->
+<section class="slide" data-node="7" data-title="Delivery day — Cliq & WorkDrive||يوم التوزيع — Cliq وWorkDrive">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="cliq"></span><span class="lg" data-app="workdrive"></span><span data-t="Zoho Cliq & Zoho WorkDrive: team collaboration||Zoho Cliq وZoho WorkDrive: تعاون الفريق"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="The field team reports live. The proof files itself.||الفريق الميداني يُحدّث لحظياً، والإثبات يُحفَظ تلقائياً."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="One channel for distribution day. One governed folder for every delivery photo and audit document.||قناة واحدة ليوم التوزيع، ومجلد واحد منظَّم لكل صورة تسليم ووثيقة تدقيق."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--cliq)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="cliq"></span><span class="appname">Zoho Cliq</span>
+        <span style="width:1px;height:18px;background:var(--w-bd)"></span>
+        <span class="lg" data-app="workdrive"></span><span class="appname">WorkDrive</span>
+        <div class="spacer"></div><div class="searchpill" data-t="⌕ Search messages and files||⌕ ابحث في الرسائل والملفات"></div><div class="uav" data-t="R||ر"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="cliq" class="on"></span><span data-app="workdrive"></span><span data-app="people"></span><span data-app="books"></span></div>
+        <div style="flex:1;display:grid;grid-template-columns:1.25fr 1fr;min-width:0">
+          <!-- Cliq channel -->
+          <div style="display:flex;flex-direction:column;background:var(--w-bg);border-inline-end:1px solid var(--w-bd);min-height:0">
+            <div class="wrow" style="padding:10px 14px"><b style="flex:1" data-t="# ramadan-distribution||# توزيع-رمضان"></b><span class="lbl" data-t="42 members||42 عضواً"></span></div>
+            <div style="flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+              <div class="msg" data-a="up" data-d=".4"><div class="wav" style="width:28px;height:28px;font-size:11px;background:var(--people)" data-t="L||ل"></div>
+                <div><div class="who"><span style="margin:0;color:var(--w-tx);font-size:11px;font-weight:700" data-t="Lama Al-Zahrani||لمى الزهراني"></span><span data-t="3:52 PM||3:52 م"></span></div>
+                <p data-t="Van 3 loaded with 40 baskets, heading to Al-Kharj south route.||الشاحنة 3 محمّلة بـ40 سلة، متجهة إلى المسار الجنوبي في الخرج."></p></div></div>
+              <div class="msg" data-a="up" data-d=".8"><div class="wav" style="width:28px;height:28px;font-size:11px;background:var(--people)" data-t="T||ت"></div>
+                <div style="flex:1"><div class="who"><span style="margin:0;color:var(--w-tx);font-size:11px;font-weight:700" data-t="Turki Al-Anazi||تركي العنزي"></span><span data-t="4:55 PM||4:55 م"></span></div>
+                <p data-t="Case BEN-2291 delivered ✓ Family confirmed by SMS.||تم تسليم الحالة <bdi>BEN-2291</bdi> ✓ وأكّدت الأسرة الاستلام برسالة."></p>
+                <div style="margin-top:6px;display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--w-bd);border-radius:8px;font-size:10.5px">
+                  <span class="chan" style="background:var(--wd)">▣</span><span><b class="ltr">BEN-2291_delivery.jpg</b><br><span class="wmu" data-t="Faces blurred · saved to WorkDrive||الوجوه مموّهة · محفوظة في WorkDrive"></span></span></div></div></div>
+              <div class="msg" data-a="up" data-d="1.2"><div class="wav" style="width:28px;height:28px;font-size:10px;background:var(--books)">B</div>
+                <div><div class="who"><span style="margin:0;color:var(--w-tx);font-size:11px;font-weight:700" data-t="Books bot||مساعد Books"></span><span data-t="5:10 PM||5:10 م"></span></div>
+                <p data-t="Basket number <b>3,000</b> is now fully funded 🎉||السلة رقم <b>3,000</b> أصبحت مموَّلة بالكامل 🎉"></p></div></div>
+              <div class="msg" data-a="up" data-d="1.6"><div class="wav" style="width:28px;height:28px;font-size:11px;background:var(--gold)">🌙</div>
+                <div><div class="who"><span style="margin:0;color:var(--w-tx);font-size:11px;font-weight:700" data-t="Prayer times bot||مساعد أوقات الصلاة"></span><span data-t="5:46 PM||5:46 م"></span></div>
+                <p data-t="Maghrib in 18 minutes. Please wrap up deliveries.||بقي 18 دقيقة على المغرب، يُرجى إنهاء التوصيل."></p></div></div>
+            </div>
+            <div style="margin:0 14px 12px;padding:8px 11px;border:1px solid var(--w-bd);border-radius:8px" class="lbl" data-t="Message # ramadan-distribution||اكتب رسالة في # توزيع-رمضان"></div>
+          </div>
+          <!-- WorkDrive -->
+          <div style="display:flex;flex-direction:column;background:var(--w-canvas);min-height:0" data-a="end" data-d=".5">
+            <div class="wrow" style="padding:10px 14px;background:var(--w-bg)"><span class="lbl" style="flex:1" data-t="Team folder › Ramadan 1447 › Delivery proofs › Al-Kharj||مجلد الفريق › رمضان 1447 › إثباتات التسليم › الخرج"></span></div>
+            <div style="padding:12px 14px;display:flex;flex-direction:column;gap:7px">
+              <div class="wc wrow" data-a="row" data-d="1"><span class="chan" style="background:var(--wd)">▣</span><b style="flex:1" class="ltr">BEN-2291_delivery.jpg</b><span class="pill g" data-t="New||جديد"></span></div>
+              <div class="wc wrow"><span class="chan" style="background:var(--wd)">▣</span><span style="flex:1" class="ltr">BEN-2290_delivery.jpg</span><span class="lbl">4:48</span></div>
+              <div class="wc wrow"><span class="chan" style="background:var(--crm)">▤</span><span style="flex:1" data-t="Distribution manifest, Van 3.pdf||كشف توزيع الشاحنة 3.pdf"></span><span class="lbl">3:50</span></div>
+              <div class="wc wrow"><span class="chan" style="background:var(--sign)">✍</span><span style="flex:1" data-t="Rayhan agreement, signed.pdf||اتفاقية ريحان موقّعة.pdf"></span><span class="lbl" data-t="3 Ram||3 رمضان"></span></div>
+              <div class="wc wrow"><span class="chan" style="background:var(--anal)">▦</span><span style="flex:1" data-t="NCNP quarterly report.pdf||تقرير المركز الوطني الربعي.pdf"></span><span class="lbl" data-t="Draft||مسودة"></span></div>
+            </div>
+            <div style="margin:auto 14px 12px;padding:11px 12px" class="wc">
+              <div class="ttl" style="margin-bottom:7px"><span data-t="Access||الصلاحيات"></span><span class="lbl">🔒</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:10.5px">
+                <div class="kv"><span data-t="Field team||الفريق الميداني"></span><span class="wmu" data-t="Upload only||رفع فقط"></span></div>
+                <div class="kv"><span data-t="Board of directors||مجلس الإدارة"></span><span class="wmu" data-t="View||عرض"></span></div>
+                <div class="kv"><span data-t="External auditor||المدقق الخارجي"></span><span class="wmu" data-t="View until 30 Shawwal||عرض حتى 30 شوال"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 10 ANALYTICS — impact ══════════ -->
+<section class="slide" data-node="8" data-title="The impact — Zoho Analytics||الأثر — Zoho Analytics">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="analytics"></span><span data-t="Zoho Analytics: impact dashboards and reporting||Zoho Analytics: لوحات الأثر والتقارير"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="The board, the auditor and the donor see the same numbers.||مجلس الإدارة والمدقق والمتبرّع يرون الأرقام نفسها."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Blended live from CRM, Books, People and Campaigns. No month-end copy and paste.||بيانات مدمجة لحظياً من CRM وBooks وPeople وCampaigns، بلا نسخ ولصق في نهاية الشهر."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--anal)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="analytics"></span><span class="appname">Zoho Analytics <span data-t="· Ramadan 1447 impact||· أثر رمضان 1447"></span></span>
+        <div class="spacer"></div><span class="pill p" style="margin-inline-end:6px" data-t="Shared with the board||مشارَكة مع مجلس الإدارة"></span><div class="uav" data-t="H||ح"></div>
+      </div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="analytics" class="on"></span><span data-app="crm"></span><span data-app="books"></span><span data-app="people"></span><span data-app="campaigns"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr;gap:10px">
+          <div class="wc" style="padding:11px 13px" data-a="up" data-d=".2"><div class="lbl" data-t="Raised, SAR||المُحصَّل، ر.س"></div>
+            <div class="big" data-count="1342000" data-fmt="m">0</div><span class="pill g" data-t="112% of target||112% من المستهدف"></span></div>
+          <div class="wc" style="padding:11px 13px" data-a="up" data-d=".28"><div class="lbl" data-t="Donors||المتبرّعون"></div>
+            <div class="big" data-count="6208">0</div><span class="pill b" data-t="1,940 first-time||1,940 لأول مرة"></span></div>
+          <div class="wc" style="padding:11px 13px" data-a="up" data-d=".36"><div class="lbl" data-t="Families reached||الأسر المستفيدة"></div>
+            <div class="big" style="color:var(--flag)" data-count="2680">0</div><span class="pill g" data-t="5,368 baskets||5,368 سلة"></span></div>
+          <div class="wc" style="padding:11px 13px;background:#FAF8FF;border-color:#DCD3FB" data-a="up" data-d=".44"><div class="lbl" data-t="Admin cost ratio||نسبة المصاريف الإدارية"></div>
+            <div class="big" style="color:var(--anal)">8.4<span style="font-size:14px">%</span></div><span class="pill p" data-t="▼ 3.1 pts||▼ 3.1 نقطة"></span></div>
+          <div class="wc" style="padding:12px 14px;grid-column:span 2;display:flex;flex-direction:column" data-a="up" data-d=".52">
+            <div class="ttl"><span data-t="Donations by night of Ramadan, SAR k||التبرعات حسب ليالي رمضان، بالألف ريال"></span><span class="lbl" data-t="Last ten nights||العشر الأواخر"></span></div>
+            <div style="flex:1;display:flex;align-items:flex-end;gap:3px;padding-top:18px">
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:52.4%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.625s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:32.2%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.650s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:25.2%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.675s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:22.4%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.700s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:20.3%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.725s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.9%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.750s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.9%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.775s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.2%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.800s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:16.8%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.825s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.9%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.850s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.2%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.875s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:16.8%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.900s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.2%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.925s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.9%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.950s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:22.4%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 0.975s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.9%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 1.000s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:19.6%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 1.025s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:18.9%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 1.050s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:20.3%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 1.075s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:23.8%;border-radius:3px 3px 0 0;background:#C9BEF9;transform-origin:bottom;animation:bargrow .7s 1.100s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:49.0%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.125s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:37.1%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.150s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:44.1%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.175s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:39.2%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.200s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:46.9%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.225s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:51.0%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.250s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><span class="lbl" style="position:absolute;bottom:calc(100.0% + 4px);white-space:nowrap;font-weight:700;color:#8A5B06" data-t="Night 27 · 143k||ليلة 27 · 143 ألف"></span><div style="width:100%;height:100.0%;border-radius:3px 3px 0 0;background:var(--gold);transform-origin:bottom;animation:bargrow .7s 1.275s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:42.7%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.300s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:54.5%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.325s cubic-bezier(.2,.9,.3,1) both"></div></div>
+<div style="flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center"><div style="width:100%;height:34.3%;border-radius:3px 3px 0 0;background:var(--anal);transform-origin:bottom;animation:bargrow .7s 1.350s cubic-bezier(.2,.9,.3,1) both"></div></div>
+            </div>
+            <div class="kv lbl" style="margin-top:5px"><span>1</span><span>10</span><span>20</span><span>30</span></div>
+          </div>
+          <div class="wc" style="padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:8px" data-a="up" data-d=".64">
+            <div class="ttl" style="align-self:stretch;margin:0"><span data-t="By fund||حسب الصندوق"></span></div>
+            <svg width="120" height="120" viewBox="0 0 120 120" style="margin:auto 0">
+              <circle cx="60" cy="60" r="46" stroke="var(--gold)" stroke-width="14" fill="none"/>
+              <circle cx="60" cy="60" r="46" stroke="var(--flag)" stroke-width="14" fill="none" transform="rotate(-90 60 60)" stroke-dasharray="289" style="--from:289;--to:121;animation:drawto 1.3s 1s cubic-bezier(.3,.9,.3,1) both"/>
+              <text x="60" y="58" text-anchor="middle" font-weight="700" font-size="22" fill="#20271F" font-family="Zoho Puvi, sans-serif">58%</text>
+              <text x="60" y="76" text-anchor="middle" font-size="11" fill="#77837A" data-t="Zakat||زكاة"></text>
+            </svg>
+            <div class="lbl" style="display:flex;gap:12px"><span style="color:var(--flag)">● <span data-t="Zakat||زكاة"></span></span><span style="color:#8A5B06">● <span data-t="Sadaqah 42%||صدقة 42%"></span></span></div>
+          </div>
+          <div class="wc" style="padding:12px 14px;display:flex;flex-direction:column" data-a="up" data-d=".76">
+            <div class="ttl"><span data-t="Families by region||الأسر حسب المنطقة"></span></div>
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px">
+              <div><div class="kv" style="margin-bottom:4px"><span data-t="Riyadh||الرياض"></span><b class="num">1,120</b></div><div class="bar" style="animation-delay:1s"><i style="--w:100%;--c:var(--anal)"></i></div></div>
+              <div><div class="kv" style="margin-bottom:4px"><span data-t="Al-Kharj||الخرج"></span><b class="num">760</b></div><div class="bar" style="animation-delay:1.1s"><i style="--w:68%;--c:var(--anal)"></i></div></div>
+              <div><div class="kv" style="margin-bottom:4px"><span data-t="Al-Qassim||القصيم"></span><b class="num">480</b></div><div class="bar" style="animation-delay:1.2s"><i style="--w:43%;--c:var(--anal)"></i></div></div>
+              <div><div class="kv" style="margin-bottom:4px"><span data-t="Hail||حائل"></span><b class="num">320</b></div><div class="bar" style="animation-delay:1.3s"><i style="--w:29%;--c:var(--anal)"></i></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 11 THE LOOP — Noura's timeline ══════════ -->
+<section class="slide" data-node="9" data-title="Noura’s Ramadan on one record||رمضان نورة في سجلٍّ واحد">
+  <header class="shead">
+    <div><p class="eyebrow" data-a="up"><span class="lg" data-app="crm"></span><span data-t="Back to the donor||العودة إلى المتبرّع"></span></p>
+      <h2 data-a="up" data-d=".06" data-t="Thirty days of Ramadan on one donor record.||ثلاثون يوماً من رمضان في سجلّ متبرّعة واحدة."></h2></div>
+    <p class="sub" data-a="up" data-d=".14" data-t="Noura never had to ask whether her donation arrived. The answer found her.||لم تحتج نورة أن تسأل: هل وصل تبرّعي؟ فالجواب وصلها."></p>
+  </header>
+  <div class="art">
+    <div class="win" style="--acc:var(--crm)" data-a="win">
+      <div class="win-top">
+        <span class="lg" data-app="crm"></span><span class="appname">Zoho CRM <span data-t="· Noura Al-Qahtani › Timeline||· نورة القحطاني › السجل الزمني"></span></span>
+        <div class="spacer"></div><span class="pill b" style="margin-inline-end:6px" data-t="Ramadan 1447 · 9 apps · 1 record||رمضان 1447 · 9 تطبيقات · سجل واحد"></span><div class="uav" data-t="A||ع"></div>
+      </div>
+      <div class="win-tabs"><div class="tab" data-t="Overview||نظرة عامة"></div><div class="tab on" data-t="Timeline||السجل الزمني"></div><div class="tab" data-t="Donations||التبرّعات"></div><div class="tab" data-t="Emails||الرسائل"></div><div class="tab" data-t="Documents||المستندات"></div></div>
+      <div class="win-mid">
+        <div class="rail"><span data-app="crm" class="on"></span><span data-app="campaigns"></span><span data-app="books"></span><span data-app="analytics"></span></div>
+        <div class="win-body" style="display:grid;grid-template-columns:1fr 240px;gap:14px">
+          <div style="position:relative;overflow:hidden">
+            <div style="position:absolute;inset-inline-start:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--camp),var(--books),var(--sign),var(--people),var(--anal),var(--flag))"></div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="0.30">
+                <span class="chan" style="background:var(--camp);z-index:1">✉</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px">
+                  <span class="lbl" style="width:128px;flex:none" data-t="1 Ramadan · 9:45 PM||1 رمضان · 9:45 م"></span><b style="font-size:11.5px;flex:1" data-t="Opened the Ramadan appeal, in Arabic||فتحت نداء رمضان بالعربية"></b><span class="pill n">Campaigns</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="0.42">
+                <span class="chan" style="background:var(--books);z-index:1">﷼</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px">
+                  <span class="lbl" style="width:128px;flex:none" data-t="1 Ramadan · 9:52 PM||1 رمضان · 9:52 م"></span><b style="font-size:11.5px;flex:1" data-t="Gave 500 SAR Zakat via Mada, receipt sent||تبرّعت بـ500 ر.س زكاةً عبر مدى، ووصلها الإيصال"></b><span class="pill n">Books</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="0.54">
+                <span class="chan" style="background:var(--crm);z-index:1">◆</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px">
+                  <span class="lbl" style="width:128px;flex:none" data-t="1 Ramadan · 9:52 PM||1 رمضان · 9:52 م"></span><b style="font-size:11.5px;flex:1" data-t="Gift linked to Zakat-eligible cases||رُبط التبرّع بحالات مستحقة للزكاة"></b><span class="pill n">CRM</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="0.66">
+                <span class="chan" style="background:var(--sign);z-index:1">✍</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px">
+                  <span class="lbl" style="width:128px;flex:none" data-t="3 Ramadan · 4:40 PM||3 رمضان · 4:40 م"></span><b style="font-size:11.5px;flex:1" data-t="Employer match signed: gift doubled to 1,000 SAR||توقيع مطابقة جهة العمل: أصبح التبرّع 1,000 ر.س"></b><span class="pill n">Sign · Contracts</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="0.78">
+                <span class="chan" style="background:var(--people);z-index:1">☺</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px">
+                  <span class="lbl" style="width:128px;flex:none" data-t="20 Ramadan · 4:55 PM||20 رمضان · 4:55 م"></span><b style="font-size:11.5px;flex:1" data-t="4 baskets delivered to families in Al-Kharj||تسليم 4 سلال لأسر في الخرج"></b><span class="pill n">People · Cliq</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="0.90">
+                <span class="chan" style="background:var(--wd);z-index:1">▤</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px">
+                  <span class="lbl" style="width:128px;flex:none" data-t="20 Ramadan · 4:56 PM||20 رمضان · 4:56 م"></span><b style="font-size:11.5px;flex:1" data-t="Delivery proof filed, faces blurred||حُفظ إثبات التسليم مع تمويه الوجوه"></b><span class="pill n">WorkDrive</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="1.02">
+                <span class="chan" style="background:var(--anal);z-index:1">▦</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px" style="border-color:#DCD3FB;background:#FAF8FF">
+                  <span class="lbl" style="width:128px;flex:none" data-t="27 Ramadan · 10:15 PM||27 رمضان · 10:15 م"></span><b style="font-size:11.5px;flex:1" data-t="Personal impact note: “Your Zakat reached 4 families”||رسالة أثر شخصية: «وصلت زكاتك إلى 4 أسر»"></b><span class="pill n">Analytics · Campaigns</span></div></div>
+              <div style="display:flex;gap:12px;align-items:center" data-a="up" data-d="1.14">
+                <span class="chan" style="background:var(--flag);z-index:1">✓</span>
+                <div class="wc" style="flex:1;padding:7px 12px;display:flex;align-items:center;gap:12px" style="border-color:#C7E3CF;background:#F3FAF5">
+                  <span class="lbl" style="width:128px;flex:none" data-t="1 Shawwal · 8:00 AM||1 شوال · 8:00 ص"></span><b style="font-size:11.5px;flex:1" data-t="Eid greeting. She joins a monthly Kafala, 150 SAR||تهنئة العيد، وانضمت إلى كفالة شهرية بـ150 ر.س"></b><span class="pill n">CRM</span></div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="wc" style="padding:12px" data-a="end" data-d="1.3"><div class="lbl" data-t="Times she asked “did it arrive?”||مرات سؤالها «هل وصل؟»"></div><div class="big" style="font-size:38px;color:var(--flag)">0</div></div>
+            <div class="wc" style="padding:12px" data-a="end" data-d="1.42"><div class="lbl" data-t="Riyals unaccounted for||ريالات مجهولة المصير"></div><div class="big" style="font-size:38px;color:var(--flag)">0</div></div>
+            <div class="wc" style="padding:12px" data-a="end" data-d="1.54"><div class="lbl" data-t="Apps that wrote to this record||تطبيقات كتبت في هذا السجل"></div><div class="big" data-count="9">0</div></div>
+            <div class="wc" style="padding:12px;flex:1;background:#FBF6EA;border-color:#EFDFB8;display:flex;flex-direction:column;justify-content:center" data-a="end" data-d="1.66">
+              <b style="font-size:12px;color:#6D4905" data-t="One-time gift → monthly donor||من تبرّع لمرة واحدة إلى متبرّعة شهرية"></b>
+              <p style="font-size:11px;line-height:1.5;margin-top:5px" data-t="Trust came from being shown, not told. That is the retention strategy.||الثقة جاءت مما رأته، لا مما قيل لها. وهذه هي استراتيجية الاحتفاظ بالمتبرّعين."></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+<!-- ══════════ 12 CLOSE ══════════ -->
+<section class="slide hero" data-node="9" data-title="Close||الختام">
+  <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px">
+    <div data-a="up" data-d=".1">
+      <h1 style="font-size:70px" data-t="Every riyal has a story||لكلِّ ريالٍ أثر"></h1>
+      <p class="alt" data-alt="لكلِّ ريالٍ أثر||Every riyal has a story"></p>
+    </div>
+    <p class="sub" style="max-width:50ch;font-size:16.5px" data-a="fade" data-d=".45" data-t="From the donor’s phone to the family’s door, and back to the donor as impact. One suite, in Arabic and English.||من جوال المتبرّع إلى باب الأسرة، ثم يعود إليه أثراً وشكراً. منظومة واحدة، بالعربية والإنجليزية."></p>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;max-width:1000px" data-a="fade" data-d=".7">
+      <span class="chip"><span class="lg" data-app="crm"></span><span data-t="CRM · donors & families||CRM · المتبرّعون والأسر"></span></span><span class="flip" style="color:var(--muted)">›</span>
+      <span class="chip"><span class="lg" data-app="campaigns"></span><span data-t="Campaigns · the appeal||Campaigns · النداء"></span></span><span class="flip" style="color:var(--muted)">›</span>
+      <span class="chip"><span class="lg" data-app="books"></span><span data-t="Books · the gift||Books · التبرّع"></span></span><span class="flip" style="color:var(--muted)">›</span>
+      <span class="chip"><span class="lg" data-app="sign"></span><span data-t="Sign & Contracts · the pledge||Sign وContracts · الشراكة"></span></span><span class="flip" style="color:var(--muted)">›</span>
+      <span class="chip"><span class="lg" data-app="people"></span><span data-t="People · volunteers||People · المتطوعون"></span></span><span class="flip" style="color:var(--muted)">›</span>
+      <span class="chip"><span class="lg" data-app="cliq"></span><span data-t="Cliq & WorkDrive · delivery||Cliq وWorkDrive · التوزيع"></span></span><span class="flip" style="color:var(--muted)">›</span>
+      <span class="chip"><span class="lg" data-app="analytics"></span><span data-t="Analytics · impact||Analytics · الأثر"></span></span>
+    </div>
+  </div>
+  <div class="thread"></div>
+</section>
+
+</div><!-- /stage -->
+
+<div id="hud">
+  <button id="prev" aria-label="Previous slide"><span class="flip">←</span></button>
+  <span id="count"><b>1</b> / 12</span>
+  <button id="next" aria-label="Next slide"><span class="flip">→</span></button>
+  <button id="ov" aria-label="Slide overview">O</button>
+  <button id="fs" aria-label="Fullscreen">⤢</button>
+</div>
+<div id="grid" role="dialog" aria-label="Slide overview"></div>
+
+<script>
+/* ── apps: logo file, colour, fallback letter ── */
+const APPS = {
+  zoho:['zoho.png','#E42527','Z'], crm:['crm.png','#E14A3B','C'], campaigns:['campaigns.png','#F0A21B','C'],
+  books:['books.png','#2D9CDB','B'], sign:['sign.png','#5B6BF0','S'], contracts:['contracts.png','#0FA3A3','C'],
+  people:['people.png','#D6457A','P'], cliq:['cliq.png','#1FA463','C'], workdrive:['workdrive.png','#3E7BFA','W'],
+  analytics:['analytics.png','#7B61FF','A']
+};
+document.querySelectorAll('[data-app]').forEach(el=>{
+  const [f,c,l] = APPS[el.dataset.app]; el.style.setProperty('--c',c);
+  const img = new Image(); img.alt = 'Zoho ' + el.dataset.app;
+  img.onerror = ()=>{ img.remove(); el.classList.add('nologo'); el.dataset.l = l };
+  img.src = 'logos/' + f; el.appendChild(img);
+});
+
+/* ── journey thread: woven as the story moves ── */
+const NODES = {
+  en:["Start","Donor","Family","Appeal","Gift","Pledge","Volunteers","Delivery","Impact","Return"],
+  ar:["البداية","المتبرّعة","الأسرة","النداء","التبرّع","الشراكة","المتطوعون","التوزيع","الأثر","العودة"]
+};
+const slides = [...document.querySelectorAll('.slide')];
+const stage = document.getElementById('stage'), grid = document.getElementById('grid');
+let i = 0;
+let LANG = new URLSearchParams(location.search).get('lang') === 'ar' ? 'ar' : 'en';
+
+function buildThreads(){
+  slides.forEach((s,idx)=>{
+    const at = +s.dataset.node, w = s.querySelector('.thread');
+    const prevAt = idx > 0 ? +slides[idx-1].dataset.node : 0;
+    const names = NODES[LANG];
+    w.innerHTML = names.map((n,k)=>{
+      const cls = k < at ? 'done' : (k === at ? 'now' : '');
+      const seg = k < names.length-1
+        ? `<span class="tseg ${k < at ? 'done':''} ${k < at && k >= prevAt ? 'fresh':''}"></span>` : '';
+      return `<i class="tnode ${cls}" data-l="${n}"></i>` + seg;
+    }).join('');
+  });
+}
+
+function applyLang(){
+  const ar = LANG === 'ar', root = document.documentElement;
+  root.lang = LANG; root.dir = ar ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const p = el.dataset.t.split('||'); el.innerHTML = ar ? (p[1] ?? p[0]) : p[0];
+  });
+  document.querySelectorAll('[data-alt]').forEach(el=>{
+    const p = el.dataset.alt.split('||'); el.innerHTML = ar ? p[1] : p[0];
+    el.lang = ar ? 'en' : 'ar'; el.dir = ar ? 'ltr' : 'rtl';
+  });
+  document.querySelectorAll('#lang button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.l === LANG));
+  buildThreads();
+  grid.innerHTML = '';
+  slides.forEach((s,k)=>{
+    const t = s.dataset.title.split('||'), b = document.createElement('button');
+    b.innerHTML = `<span>${String(k+1).padStart(2,'0')}</span>${ar ? t[1] : t[0]}`;
+    b.onclick = ()=>{ grid.classList.remove('on'); show(k) };
+    grid.appendChild(b);
+  });
+  const u = new URL(location); u.searchParams.set('lang', LANG); history.replaceState(null,'',u);
+}
+function setLang(l){ if(l === LANG) return; LANG = l; applyLang(); replay() }
+document.querySelectorAll('#lang button').forEach(b=>b.onclick = e=>{ e.stopPropagation(); setLang(b.dataset.l) });
+
+document.querySelectorAll('[data-d]').forEach(el=>{ el.style.animationDelay = el.dataset.d + 's' });
+
+/* ── counters ── */
+function fmt(v, mode){
+  const ar = LANG === 'ar';
+  if(mode === 'm') return v >= 1e6 ? (v/1e6).toFixed(2) + (ar ? ' مليون' : 'M') : Math.round(v/1000) + (ar ? ' ألف' : 'k');
+  return v.toLocaleString('en-US');
+}
+function runCounters(slide){
+  slide.querySelectorAll('[data-count]').forEach(el=>{
+    const target = +el.dataset.count, mode = el.dataset.fmt, t0 = performance.now();
+    (function tick(now){
+      const p = Math.min(1, (now - t0)/1100), e = 1 - Math.pow(1-p, 3);
+      el.textContent = fmt(Math.round(target*e), mode);
+      if(p < 1) requestAnimationFrame(tick);
+    })(t0);
+  });
+}
+
+/* ── nav ── */
+function show(n){
+  i = Math.max(0, Math.min(slides.length-1, n));
+  slides.forEach((s,k)=>s.classList.toggle('is-on', k === i));
+  document.querySelector('#count b').textContent = i+1;
+  setTimeout(()=>runCounters(slides[i]), 420);
+}
+function replay(){ slides[i].classList.remove('is-on'); void slides[i].offsetWidth; show(i) }
+const next = ()=>show(i+1), prev = ()=>show(i-1);
+document.getElementById('next').onclick = next;
+document.getElementById('prev').onclick = prev;
+document.getElementById('fs').onclick = ()=>
+  document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+document.getElementById('ov').onclick = ()=> grid.classList.toggle('on');
+
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){ grid.classList.remove('on'); return }
+  if(['ArrowRight',' ','PageDown','Enter'].includes(e.key)){ e.preventDefault(); next() }
+  if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); prev() }
+  if(e.key === 'Home') show(0);
+  if(e.key === 'End') show(slides.length-1);
+  const k = e.key.toLowerCase();
+  if(k === 'f') document.getElementById('fs').click();
+  if(k === 'o') grid.classList.toggle('on');
+  if(k === 'r') replay();
+  if(k === 'l') setLang(LANG === 'en' ? 'ar' : 'en');
+});
+stage.addEventListener('click', e=>{ if(!e.target.closest('button')) next() });
+
+let sx = 0;
+stage.addEventListener('touchstart', e=>sx = e.touches[0].clientX, {passive:true});
+stage.addEventListener('touchend', e=>{
+  const d = e.changedTouches[0].clientX - sx, rtl = LANG === 'ar';
+  if(Math.abs(d) > 44) ((d < 0) !== rtl) ? next() : prev();
+}, {passive:true});
+
+function fit(){
+  const s = Math.min(innerWidth/1280, innerHeight/720) * (innerWidth < 700 ? 1 : .965);
+  stage.style.transform = `translate(-50%,-50%) scale(${s})`;
+}
+addEventListener('resize', fit);
+if(window.visualViewport) visualViewport.addEventListener('resize', fit);
+applyLang(); fit(); show(0);
+</script>
+</body>
+</html>
